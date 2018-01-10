@@ -1,0 +1,8 @@
+
+Explain plan for query
+
+EXPLAIN PLAN FOR select * from dept where deptno = 40;
+Explained.
+SQL> set linesize 132
+SQL> SELECT * FROM TABLE(dbms_xplan.display)
+
