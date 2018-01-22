@@ -1,1 +1,63 @@
 
+Basics:
+Thread - A thread is a thread of execution in a program. 
+         JVM allows an application to have multiple threads of execution running concurrently.
+
+There are three ways to create a new thread of execution. 
+1) One is to declare a class to be a subclass of Thread. This subclass should override the run method of class Thread. 
+   An instance of the subclass can then be allocated and started.
+   public class Thread extends Object implements Runnable
+   
+2) The other way to create a thread is to declare a class that implements the Runnable interface. 
+   That class then implements the run method. An instance of the class can then be allocated, passed as an argument when creating Thread,
+   and started. 
+   @FunctionalInterface
+   public interface Runnable
+
+3) The Callable interface is similar to Runnable, in that both are designed for classes whose instances are potentially executed by another thread. 
+   A Runnable, however, does not return a result and cannot throw a checked exception.
+   @FunctionalInterface
+   public interface Callable<V>
+   
+
+1) Example of creation of Thread:
+
+class PrimeThread extends Thread {
+         long minPrime;
+         PrimeThread(long minPrime) {
+             this.minPrime = minPrime;
+         }
+
+         public void run() {
+             // compute primes larger than minPrime
+              . . .
+         }
+     }
+     
+    class MainThread{
+      public static void main(String[] args)
+      {
+          PrimeThread p = new PrimeThread(143);
+          p.start();
+      }
+    }
+
+2) Example of creation of Thread using Runnable:
+ class PrimeRun implements Runnable {
+         long minPrime;
+         PrimeRun(long minPrime) {
+             this.minPrime = minPrime;
+         }
+
+         public void run() {
+             // compute primes larger than minPrime
+              . . .
+         }
+     }
+      class MainThread{
+      public static void main(String[] args)
+      {
+         PrimeRun p = new PrimeRun(143);
+         new Thread(p).start();
+      }
+    }
