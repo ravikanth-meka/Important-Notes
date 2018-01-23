@@ -6,3 +6,6 @@ Batch jobs are useful for
 1) Long running jobs - outside office hours
 2) Non interactive 
 3) Process large volums of data
+4) Close of business processing - order processing, Business reportting, Account reconciliation
+5) Large-scale output jobs - loyolty scheme emails, Bank statements.
+
