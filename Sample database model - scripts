@@ -1,0 +1,78 @@
+http://databaseanswers.org/data_models/e_commerce/index.htm
+
+CREATE TABLE customer
+    ( customer_id        NUMBER(6)
+    , first_name    VARCHAR2(20)
+    , middle_name     VARCHAR2(20)
+    , last_name     VARCHAR2(20)
+    , gender VARCHAR2(10)
+    , address_id       NUMBER(6)
+    , phone_numbers      NUMBER(10)
+    , login_name NUMBER(20)
+    , login_password NUMBER(20)
+    ) ;
+
+CREATE TABLE cust_address
+    ( address_id    NUMBER(6)
+      , address1    VARCHAR(120)
+      , address2    VARCHAR(120)
+      , address3    VARCHAR(120)
+      , city        VARCHAR(100)
+      , state       CHAR(2)
+      , country     CHAR(2)
+      , postalCode  VARCHAR(10) NOT NULL
+    ) ;
+
+CREATE TABLE orders
+    ( order_id    NUMBER(6)
+      , customer_id    NUMBER(6)
+      , order_status    VARCHAR(20)
+      , date_order_placed    VARCHAR(20)
+    ) ;
+    
+    
+CREATE TABLE order_items
+    ( order_item_id  NUMBER(10)
+      , order_id    NUMBER(6)
+      , product_id    NUMBER(6)
+      , order_item_status_code  NUMBER(6)
+      , order_item_qty   NUMBER(6)
+      , order_item_price   NUMBER(6)
+      , date_order_placed    VARCHAR(20)
+    ) ;
+CREATE TABLE order_item_status_codes
+    ( order_item_status_code  NUMBER(6)
+      , order_item_status_description    VARCHAR(20)
+    ) ;    
+
+CREATE TABLE Products
+    ( product_id  NUMBER(6)
+      , product_description    VARCHAR(20)
+      , product_name    VARCHAR(20)
+      , product_price    NUMBER(6)
+      , product_color    VARCHAR(20)
+      , product_size    VARCHAR(20)
+    ) ;        
+    
+CREATE TABLE Shipments
+    ( shipment_id  NUMBER(6)
+      , order_id    VARCHAR(20)
+      , shipment_tracking_number    VARCHAR(20)
+      , shipment_date    NUMBER(6)
+      , other_shipment_details    VARCHAR(20)
+    ) ;    
+    
+CREATE TABLE Shipment_items
+    ( shipment_id  NUMBER(6)
+      , order_item_id    NUMBER(10)
+    ) ;    
+
+
+CREATE TABLE Customer_payment_methods
+    ( customer_payment_id  NUMBER(6)
+	, customer_id    NUMBER(6)
+	, payment_method_code    NUMBER(6)
+	, credit_card_number number(20)
+	, payment_method_details VARCHAR(30)
+    ) ;    
+
