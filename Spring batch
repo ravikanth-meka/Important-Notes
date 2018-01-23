@@ -1,1 +1,8 @@
 
+
+Batch processing is defined as processing of data without interaction or interruption
+
+Batch jobs are useful for
+1) Long running jobs - outside office hours
+2) Non interactive 
+3) Process large volums of data
