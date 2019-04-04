@@ -1,0 +1,28 @@
+Accesing dynamic fields
+
+<td style="background-color: #D5D6D7 !important; border: 1px solid white;" *ngFor="let col of columns; let i=index" [ngSwitch]="col.field" pResizableColumn>
+        <input #filterInputNew[{{i}}] name="filterInputNew[{{i}}]" *ngIf="applyfilter" pInputText [id]="col.field" 
+        type="text" style="width:98%" (input)="dt.filter($event.target.value, col.field, 'contains')">
+      </td>
+      
+ i: number = 0;
+  clearFilters(event, dt) {
+    this.i=0;
+    if (this.filterInput) {
+      this.filterInput.nativeElement.value = '';
+    }
+    for (const column of this.columns) {
+      if (dt.filters[column.field]) {
+        let elem: NodeListOf<HTMLElement> = document.getElementsByName("filterInputNew["+this.i+"]")
+        var filterElememt  = (<HTMLInputElement>document.getElementById(elem[0].getAttribute("id"))).value =""
+        dt.filters[column.field] = { value: null };
+        delete dt.filters[column.field];
+        if (dt.filters['global']) {
+          dt.filters['global'].value = "";
+        }
+      }
+      this.i = this.i +1;
+    }
+    dt.filters = null;
+    dt.reset();
+  }
