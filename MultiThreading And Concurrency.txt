@@ -1,0 +1,63 @@
+https://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
+
+The Concurrency API was first introduced with the release of Java 5 and then progressively enhanced with every new Java release.
+
+
+Threads and Runnables#
+All modern operating systems support concurrency both via processes and threads. 
+Processes are instances of programs which typically run independent to each other, e.g. if you start a java program the operating system spawns a new process which runs in parallel to other programs. Inside those processes we can utilize threads to execute code concurrently, so we can make the most out of the available cores of the CPU.
+
+
+Before starting a new thread you have to specify the code to be executed by this thread, often called the task.
+
+Runnable runnable = () -> {
+    try {
+        String name = Thread.currentThread().getName();
+        System.out.println("Foo " + name);
+        TimeUnit.SECONDS.sleep(1);
+        System.out.println("Bar " + name);
+    }
+    catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+};
+
+Thread thread = new Thread(runnable);
+thread.start();
+
+
+
+Working with the Thread class can be very tedious and error-prone. Due to that reason the Concurrency API has been introduced back in 2004 with the release of Java 5. 
+Since that time the Concurrency API has been enhanced with every new Java release and even Java 8 provides new classes and methods for dealing with concurrency.
+
+Executors :
+***********
+The Concurrency API introduces the concept of an ExecutorService as a higher level replacement for working with threads directly. 
+Executors are capable of running asynchronous tasks and typically manage a pool of threads, so we don't have to create new threads manually. All threads of the internal pool will be reused under the hood for revenant tasks, so we can run as many concurrent tasks as we want throughout the life-cycle of our application with a single executor service.
+
+ExecutorService executor = Executors.newSingleThreadExecutor();
+executor.submit(() -> {
+    String threadName = Thread.currentThread().getName();
+    System.out.println("Hello " + threadName);
+});
+
+The class Executors provides convenient factory methods for creating different kinds of executor services. In this sample we use an executor with a thread pool of size one.
+
+The result is that , the java process never stops! Executors have to be stopped explicitly - otherwise they keep listening for new tasks.
+
+An ExecutorService provides two methods for that purpose: shutdown() waits for currently running tasks to finish while shutdownNow() interrupts all running tasks and shut the executor down immediately.
+
+
+Callables and Futures
+*********************
+In addition to Runnable executors support another kind of task named Callable. Callables are functional interfaces just like runnables but instead of being void they return a value.
+
+Callable<Integer> task = () -> {
+    try {
+        TimeUnit.SECONDS.sleep(1);
+        return 123;
+    }
+    catch (InterruptedException e) {
+        throw new IllegalStateException("task interrupted", e);
+    }
+};
