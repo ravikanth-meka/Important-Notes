@@ -1,0 +1,171 @@
+To create new project
+ng new AngularCrud --skip-tests true
+
+Add bootstrap to project
+npm install bootstrap@3 --save
+	Update angular.json file, with bootstrap css.
+	"styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+
+Inside project
+create models as required for project - eg: Employee class
+    add ? to optional fields
+	eg: email? : string;
+	    phoneNumber?: number;
+
+***************************************************************************
+To create new component : eg: listEmployees
+ng g c employees/listEmployees --spec false --flat true
+	This will create component files, such as html, css and ts file. and updates app.module.ts, with new component created
+
+***************************************************************************
+
+Directives:
+Structural directives: *ngFor - to iterate list
+Structural directives modify the DOM, structural directives will have * at the starting
+
+***************************************************************************
+
+Module:
+RouterModule and Routes are imported from @angular/router.
+This is by defualt available in Angular 6 with name AppRoutingModule
+
+The other default modules include in app.module.ts are BrowserModule and NgModule
+
+Add routes in the app-routing.module.ts
+and update the app.component.html with bootstrap class "navbar" with routerLinks(routes mentioned in app-roting.module.ts) and <router-outlet> directive
+
+***************************************************************************
+
+base href (index.html)
+If we want to change the url, then base href should be changed in index.html
+  <title>AngularCrud</title>
+  <base href="/emp">
+
+once base href is changed, the server also should be started with option base href 
+eg: ng serve --base-href /emp/
+
+then url will be http://localhost:4200/emp/list
+
+
+local we prefer, base href to be "/"
+but in prod we might need to use subfolder, so in those cases, while doing prod build we can use base href option.
+
+eg: ng build -prod --base-href /emp/
+in dist folder, we see files will be created under folder /emp/
+
+***************************************************************************
+Angular forms.
+1) Template driven forms
+2) Model driven forms( aka Reactive forms)
+
+1) Template driven forms
+ngForm directive - uses in form tag, will check for pristine, touched, dirty etc.,
+
+eg: <form #employeeForm="ngForm"> - To use ngForm, we need FormsModule to be imported, add this in app.module.ts
+#employeeForm is template reference varaible
+
+ <input id="fullName" name="fn" [(ngModel)]="fullName" type="text" class="form-control">
+
+ngModel directive
+[(ngModel)] - banana in a box - is two way binding 
+{{employeeForm.value | json}}  - string interpolation
+
+[value]="dept.id" - This is for property binding
+
+(ngSubmit) - ngSubmit directive with event binding
+<form #employeeForm="ngForm" (ngSubmit)="saveEmploye(employeeForm)">
+
+***************************************************************************
+To install 3rd party components like primeNg, ngx-bootstrap
+eg: with primeNg
+npm install primeng font-awesome
+
+Update angular.json styles
+
+
+"styles": [
+  "styles.css",
+  "../node_modules/font-awesome/css/font-awesome.min.css",
+  "../node_modules/primeng/resources/primeng.min.css",
+  "../node_modules/primeng/resources/themes/darkness/theme.css"
+],
+
+Restart server
+
+update app.module.ts
+import required Modules
+
+import {CalendarModule} from 'primeng/calendar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+and 
+imports: [
+    BrowserAnimationsModule,
+
+    CalendarModule
+  ],
+
+***************************************************************************
+
+ngIf structural directive
+ <img [src]="photoPath" height="200" width="200" *ngIf="previewPhoto"/>
+
+
+  <button type="button" (click)="togglePhotoPreview()" class="btn btn-primary">
+        {{previewPhoto? "Hide" : "Show"}} Preivew  ---  String interpolation and verify conditions
+      </button>
+
+
+ <button type="button" (click)="togglePhotoPreview()" class="btn btn-primary">Show Preivew</button>
+type="button" specifies that this is not submit, it should behave like button.
+if we dont specify type="button", it will treat as submit, and executes submit event also.
+
+***************************************************************************
+
+
+HTML 5 validation attributes
+required
+maxlength
+pattern
+min
+max
+https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+
+*************************************************************************
+
+Validations:
+
+ <div class="form-group"  [class.has-error]="fullNameControl.invalid && fullNameControl.touched"
+      [class.has-success]="fullNameControl.valid" >
+        <label for="fullName" class="control-label">Full Name</label>
+        <input required id="fullName" name="fullName" [(ngModel)]="fullName" type="text" class="form-control"
+        #fullNameControl="ngModel">
+        <span class="help-block" *ngIf="fullNameControl.invalid && fullNameControl.touched">
+          Full name is required
+        </span>
+      </div>
+
+ [class.has-error] -> class binding, based on template reference variable touched and invalid, add this class
+
+
+<span class="help-block" *ngIf="email.errors?.required && email.touched">
+email.errors? -> "?" is safe navigation operator, to handle not null or undefined
+			used when we are unsure of property
+
+
+
+
+ <option [ngValue]="null">Select Department</option>
+          <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
+
+
+ngValue - directive - use ngValue to bind null or an object
+   value - use value to bind string or a number
+
+   <option *ngFor="let dept of departments" [ngValue]="dept">{{dept.name}}</option>
+
+if ngValue directive is used, we get value like this, complete department object
+"department": { "id": 1, "name": "Help Desk" }, 

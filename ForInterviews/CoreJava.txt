@@ -1,0 +1,135 @@
++------------------------------------------------------------------------------+
+¦   Property   ¦       HashSet       ¦      TreeSet      ¦     LinkedHashSet   ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦              ¦  no guarantee order ¦ sorted according  ¦                     ¦
+¦   Order      ¦ will remain constant¦ to the natural    ¦    insertion-order  ¦
+¦              ¦      over time      ¦    ordering       ¦                     ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦ Add/remove   ¦        O(1)         ¦     O(log(n))     ¦        O(1)         ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦              ¦                     ¦   NavigableSet    ¦                     ¦
+¦  Interfaces  ¦         Set         ¦       Set         ¦         Set         ¦
+¦              ¦                     ¦    SortedSet      ¦                     ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦              ¦                     ¦    not allowed    ¦                     ¦
+¦  Null values ¦       allowed       ¦ 1st element only  ¦      allowed        ¦
+¦              ¦                     ¦     in Java 7     ¦                     ¦
+¦--------------+---------------------------------------------------------------¦
+¦              ¦   Fail-fast behavior of an iterator cannot be guaranteed      ¦
+¦   Fail-fast  ¦ impossible to make any hard guarantees in the presence of     ¦
+¦   behavior   ¦           unsynchronized concurrent modification              ¦
+¦--------------+---------------------------------------------------------------¦
+¦      Is      ¦                                                               ¦
+¦ synchronized ¦              implementation is not synchronized               ¦
++------------------------------------------------------------------------------+
+
+
+The TreeSet is one of two sorted collections (the other being TreeMap). 
+It uses a Red-Black tree structure (but you knew that), and guarantees that the elements will be in ascending order, according to natural order. 
+Optionally, you can construct a TreeSet with a constructor that lets you give the collection your own rules for what the order should be (rather than relying on the ordering defined by the elements' class) by using a Comparable or Comparator
+
+and A LinkedHashSet is an ordered version of HashSet that maintains a doubly-linked List across all elements.
+Use this class instead of HashSet when you care about the iteration order. 
+When you iterate through a HashSet the order is unpredictable, while a LinkedHashSet lets you iterate through the elements in the order in which they were inserted
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Difference between List and Set in Java
+---------------------------------------
+List is an ordered sequence of elements whereas Set is a distinct list of elements which is unordered
+
+Difference between List and Set in Java collection
+--------------------------------------------------
+List is a type of ordered collection that maintains the elements in insertion order while Set is a type of unordered collection so elements are not maintained any order.
+
+List allows duplicates while Set doesn't allow duplicate elements . All the elements of a Set should be unique if you try to insert the duplicate element in Set it would replace the existing value.
+
+List permits any number of null values in its collection while Set permits only one null value in its collection.
+
+New methods are defined inside List interface . But, no new methods are defined inside Set interface, so we have to use Collection interface methods only with Set subclasses .
+
+List can be inserted in in both forward direction and backward direction using Listiterator while Set can be traversed only in forward direction with the help of iterator
+
+When to use
+------------
+List is an ordered sequence of elements, however set is distinct list of element which is unordered.
+So, use list for storing non-unique objects as per insertion order and use set for storing unique objects in random order
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ArrayList vs LinkedList in Java
+--------------------------------
+Two popular lists in Java are:
+
+1. ArrayList:-Implemented with the concept of dynamic array.
+
+ArrayList<Type> arrL = new ArrayList<Type>();
+
+Here Type is the data type of elements in ArrayList to be created
+
+2. LinkedList:-Implemented with the concept of doubly linked list.
+
+LinkedList<Type> linkL = new LinkedList<Type>();
+
+Here Type is the data type of elements in LinkedList to be created
+
+
+Comparision between ArrayList and LinkedList:-
+---------------------------------------------
+Insertions are easy and fast in LinkedList as compared to ArrayList because there is no risk of resizing array and copying content to new array if array gets full which makes adding into ArrayList of O(n) in worst case, while adding is O(1) operation in LinkedList in Java. 
+
+ArrayList also needs to be update its index if you insert something anywhere except at the end of array.
+
+Removal also better in LinkedList than ArrayList due to same reasons as insertion.
+
+LinkedList has more memory overhead than ArrayList because in ArrayList each index only holds actual object (data) but in case of LinkedList each node holds both data and address of next and previous node.
+
+Both LinkedList and ArrayList require O(n) time to find if an element is present or not. However we can do Binary Search on ArrayList if it is sorted and therefore can search in O(Log n) time.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+https://javarevisited.blogspot.com/2015/08/difference-between-HashMap-vs-TreeMap-vs-LinkedHashMap-Java.html
+
+https://stackoverflow.com/questions/2889777/difference-between-hashmap-linkedhashmap-and-treemap
+
++------------------------------------------------------------------------------+
+¦   Property   ¦       HashMap       ¦      TreeMap      ¦     LinkedHashMap   ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦ Iteration    ¦  no guarantee order ¦ sorted according  ¦                     ¦
+¦   Order      ¦ will remain constant¦ to the natural    ¦    insertion-order  ¦
+¦              ¦      over time      ¦    ordering  or   ¦                     ¦
+¦              ¦                     ¦    comparator     ¦                     ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦  Get/put     ¦                     ¦                   ¦                     ¦
+¦   remove     ¦         O(1)        ¦      O(log(n))    ¦         O(1)        ¦
+¦ containsKey  ¦                     ¦                   ¦                     ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦              ¦                     ¦   NavigableMap    ¦                     ¦
+¦  Interfaces  ¦         Map         ¦       Map         ¦         Map         ¦
+¦              ¦                     ¦    SortedMap      ¦                     ¦
+¦--------------+---------------------+-------------------+---------------------¦
+¦              ¦                     ¦                   ¦                     ¦
+¦     Null     ¦       allowed       ¦    only values    ¦       allowed       ¦
+¦ values/keys  ¦                     ¦                   ¦                     ¦
+¦--------------+---------------------------------------------------------------¦
+¦              ¦   Fail-fast behavior of an iterator cannot be guaranteed      ¦
+¦   Fail-fast  ¦ impossible to make any hard guarantees in the presence of     ¦
+¦   behavior   ¦           unsynchronized concurrent modification              ¦
+¦--------------+---------------------------------------------------------------¦
+¦              ¦ List of Buckets, if ¦                   ¦                     ¦
+¦Implementation¦ more than 8 entires ¦                   ¦                     ¦
+¦              ¦  in bucket, then    ¦			 ¦   double-linked     ¦
+¦	       ¦ Java 8 will switch  ¦			 ¦    list of 	       ¦
+¦	       ¦ to balanced tree    ¦                   ¦      buckets        ¦
+¦	       ¦ from linked list    ¦   Red-Black Tree  ¦                     ¦
+¦              ¦                     ¦                   ¦                     ¦
+¦--------------+---------------------------------------------------------------¦
+¦      Is      ¦                                                               ¦
+¦ synchronized ¦              implementation is not synchronized               ¦
++------------------------------------------------------------------------------+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------

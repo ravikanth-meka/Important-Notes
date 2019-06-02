@@ -1,0 +1,60 @@
+Hibernate Notes:
+
+FIRST-LEVEL CACHE
+
+Hibernate has the concept of first-level cache. It is a session scoped cache which ensures that each entity instance is loaded only once in the persistent context.
+
+Once the session is closed, first-level cache is terminated as well. This is actually desirable, as it allows for concurrent sessions to work with entity instances in isolation from each other.
+
+
+SECOND-LEVEL CACHE
+
+On the other hand, second-level cache is SessionFactory-scoped, meaning it is shared by all sessions created with the same session factory. When an entity instance is looked up by its id (either by application logic or by Hibernate internally, e.g. when it loads associations to that entity from other entities), and if second-level caching is enabled for that entity, the following happens:
+
+If an instance is already present in the first-level cache, it is returned from there
+If an instance is not found in the first-level cache, and the corresponding instance state is cached in the second-level cache, then the data is fetched from there and an instance is assembled and returned
+Otherwise, the necessary data are loaded from the database and an instance is assembled and returned
+Once the instance is stored in the persistence context (first-level cache), it is returned from there in all subsequent calls within the same session until the session is closed or the instance is manually evicted from the persistence context. Also, the loaded instance state is stored in L2 cache if it was not there already.
+
+
+
+ENABLING SECOND-LEVEL CACHING
+
+With the FOLLOWING TWO PROPERTIES we tell Hibernate that L2 caching is enabled and we give it the name of the region factory class:
+
+hibernate.cache.use_second_level_cache=true
+hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+
+Making an Entity Cacheable
+In order to make an entity eligible for second-level caching, we annotate it with Hibernate specific @org.hibernate.annotations.Cache annotation and specify a cache concurrency strategy.
+
+Some developers consider that it is a good convention to add the standard @javax.persistence.Cacheable annotation as well (although not required by Hibernate), so an entity class implementation might look like this:
+
+@Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Foo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    private long id;
+ 
+    @Column(name = "NAME")
+    private String name;
+     
+    // getters and setters
+}
+For each entity class, Hibernate will use a separate cache region to store state of instances for that class. The region name is the fully qualified class name.
+
+For example, Foo instances are stored in a cache named org.baeldung.persistence.model.Foo in Ehcache.
+
+To verify that caching is working, we may write a quick test like this:
+
+
+Foo foo = new Foo();
+fooService.create(foo);
+fooService.findOne(foo.getId());
+int size = CacheManager.ALL_CACHE_MANAGERS.get(0)
+  .getCache("org.baeldung.persistence.model.Foo").getSize();
+assertThat(size, greaterThan(0));
